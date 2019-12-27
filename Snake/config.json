@@ -1,4 +1,5 @@
 {
-    "Width": 100,
-    "Length": 100
+    "Width": 25,
+    "Length": 25,
+    "TimesPerSecond":100000
 }

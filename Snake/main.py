@@ -1,43 +1,64 @@
-# Snake Game Version 1.0 
+# Snake Game Version 1.1
 # Author : Alex
-# Time : 12/26/2019
+# Time : 12/27/2019
 import numpy as np
 from matplotlib import pyplot as plt
 from snake import snake
 from nut import nut
-
-WindowWidth = 100
-WindowLength = 100
+import json
+from methods import method
 
 if __name__ == "__main__":
-    # example = np.zeros((WindowWidth, WindowLength))
-    # print(example)
-    snake = snake()
-    n = nut(snake)
-
-    plt.ion()
-    plt.connect('key_press_event',snake.on_click)
+    cycle = 0
     while True:
-        if snake.direction == 1:
-            status = snake.Left()
-        elif snake.direction == 2:
-            status = snake.Right()
-        elif snake.direction == 3:
-            status = snake.Up()
-        elif snake.direction == 4:
-            status = snake.Down()
-        else:
-            status = False
-        if status == False:
-            break
-        if snake.headX[0] == n.x and snake.headY[0] == n.y:
-            snake.eat()
-            n = nut(snake)
-        plt.axis([0, WindowWidth, 0, WindowLength])
-        plt.plot(snake.bodyX, snake.bodyY, 'ro')
-        plt.plot(snake.headX, snake.headY, 'yo')
-        plt.plot(n.x, n.y, 'go')
-        plt.draw()
-        plt.pause(0.01)
-        plt.clf()
-    print("Done.")
+        with open("config.json") as json_file:
+            data = json.load(json_file)
+            WindowWidth = data["Width"]
+            WindowLength = data['Length']
+            TimesPerSecond = data['TimesPerSecond']
+        s = snake()
+        n = nut(s)
+
+        plt.ion()
+        plt.connect('key_press_event', snake.on_click)
+        while True:
+            m = method(s, WindowWidth, WindowLength, n.x, n.y)
+            s.direction = m.decide()
+            print("snake.steps=",s.steps)
+            if s.direction == 1:
+                status = s.Left()
+            elif s.direction == 2:
+                status = s.Right()
+            elif s.direction == 3:
+                status = s.Up()
+            elif s.direction == 4:
+                status = s.Down()
+            else:
+                status = False
+            if status == False:
+                plt.axis([0, WindowWidth, 0, WindowLength])
+                plt.plot(s.bodyX, s.bodyY, 'ro')
+                plt.plot(s.headX, s.headY, 'yo')
+                plt.plot(n.x, n.y, 'go')
+                plt.draw()
+                plt.pause(1)  # When failure happens pause 1 sec
+                break
+            if s.headX[0] == n.x and s.headY[0] == n.y:
+                s.eat()
+                n = nut(s)
+            plt.axis([0, WindowWidth, 0, WindowLength])
+            plt.plot(s.bodyX, s.bodyY, 'ro')
+            plt.plot(s.headX, s.headY, 'yo')
+            plt.plot(n.x, n.y, 'go')
+            plt.draw()
+            # plt.pause(1/TimesPerSecond)
+            plt.clf()
+        print("Done.")
+        cycle+=1
+        dataInput = {}
+        dataInput['Length'] = s.length
+        dataInput['Xfact'] = m.Xfact
+        dataInput['Yfact'] = m.Yfact
+        if dataInput['Length'] > 25:
+            with open('cycle-%d.json'%cycle, 'w') as outfile:
+                json.dump(dataInput, outfile)

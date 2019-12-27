@@ -16,6 +16,7 @@ class snake:
         self.headX = [4]
         self.headY = [1]
         self.direction = 2    # 1: Left 2: Right 3: Up 4: Down
+        self.steps = 200
 
     def follow(self):
         self.footprintX = self.bodyX[0]
@@ -31,52 +32,75 @@ class snake:
         self.bodyX.insert(0, self.footprintX)
         self.bodyY.insert(0, self.footprintY)
         self.length += 1
+        self.steps = 200
 
     def Left(self):
         self.follow()
         self.headX[0] -= 1
+        self.steps -= 1
         if self.headX[0] == 0:
             print("Hit the windows.")
             return False
-        elif self.headX[0] in self.bodyX:
-            print("Hit the body.")
+        
+        elif self.steps == 0:
+            print("Run out of steps.")
             return False
+        for i in range(self.length):
+            if self.bodyX[i] == self.headX[0] and self.bodyY[i] == self.headY[0]:
+                print("Hit the body!")
+                return False
         return True
 
     def Right(self):
         self.follow()
-        # self.bodyX += 1
         self.headX[0] += 1
+        self.steps -= 1
         if self.headX[0] == self.WidnowWidth:
             print("Hit the windows.")
             return False
-        elif self.headX[0] in self.bodyX:
-            print("Hit the body.")
+        
+        elif self.steps == 0:
+            print("Run out of steps.")
             return False
+        for i in range(self.length):
+            if self.bodyX[i] == self.headX[0] and self.bodyY[i] == self.headY[0]:
+                print("Hit the body!")
+                return False
         return True
 
     def Up(self):
         self.follow()
         # self.bodyY += 1
         self.headY[0] += 1
+        self.steps -= 1
         if self.headY[0] == self.WindowsLength:
             print("Hit the windows.")
             return False
-        elif self.headY[0] in self.bodyY:
-            print("Hit the body.")
+        elif self.steps == 0:
+            print("Run out of steps.")
             return False
+        
+        for i in range(self.length):
+            if self.bodyX[i] == self.headX[0] and self.bodyY[i] == self.headY[0]:
+                print("Hit the body!")
+                return False
         return True
 
     def Down(self):
         self.follow()
-        # self.bodyY -= 1
         self.headY[0] -= 1
+        self.steps -= 1
         if self.headY[0] == 0:
             print("Hit the windows.")
             return False
-        elif self.headY[0] in self.bodyY:
-            print("Hit the body.")
+        elif self.steps == 0:
+            print("Run out of steps.")
             return False
+        
+        for i in range(self.length):
+            if self.bodyX[i] == self.headX[0] and self.bodyY[i] == self.headY[0]:
+                print("Hit the body!")
+                return False
         return True
 
     def on_click(self, event):

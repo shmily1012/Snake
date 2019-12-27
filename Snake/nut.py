@@ -12,8 +12,8 @@ class nut:
         occupy = True
         while(occupy):
             occupy = False
-            self.x = random.randint(0, data['Width'])
-            self.y = random.randint(0, data['Length'])
+            self.x = random.randint(1, data['Width'])
+            self.y = random.randint(1, data['Length'])
             if self.x == snake.headX[0] and self.y == snake.headY[0]:
                 print("Nut is in Head(%d,%d)" % (self.x, self.y))
                 occupy = True
