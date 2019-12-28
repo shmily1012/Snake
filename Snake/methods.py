@@ -1,6 +1,7 @@
 
 import random
 
+
 class method:
     def __init__(self, snake,
                  wallx, wally,
@@ -17,8 +18,8 @@ class method:
 
         self.score = 0  # score
 
-        self.Xfact = random.randint(1,100)
-        self.Yfact = random.randint(1,10000)
+        self.Xfact = random.randint(10, 100)
+        self.Yfact = random.randint(1, 10000)
 
     def getSorce(self, x, y):
         score = 0
@@ -38,8 +39,9 @@ class method:
         SqDistance2Nut = (self.nutx - x) ** 2 + (self.nuty-y)**2
         if SqDistance2Nut == 0:
             SqDistance2Nut = 0.1
-        print('sum =',sum, 'SqDistance2Nut=',SqDistance2Nut )
-        score = sum*self.Xfact + self.wallx*self.wally*self.Yfact/SqDistance2Nut
+        print('sum =', sum, 'SqDistance2Nut=', SqDistance2Nut)
+        score = sum*self.Xfact + self.wallx*self.wally * \
+            self.Yfact/SqDistance2Nut*(200/self.snake.steps)
         return score
 
     def goUp(self):

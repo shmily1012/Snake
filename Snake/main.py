@@ -2,6 +2,7 @@
 # Author : Alex
 # Time : 12/27/2019
 import numpy as np
+import os
 from matplotlib import pyplot as plt
 from snake import snake
 from nut import nut
@@ -11,6 +12,7 @@ from methods import method
 if __name__ == "__main__":
     cycle = 0
     while True:
+        print(os.path.abspath)
         with open("config.json") as json_file:
             data = json.load(json_file)
             WindowWidth = data["Width"]
@@ -34,6 +36,7 @@ if __name__ == "__main__":
             elif s.direction == 4:
                 status = s.Down()
             else:
+                print("Give Up!")
                 status = False
             if status == False:
                 plt.axis([0, WindowWidth, 0, WindowLength])
@@ -41,7 +44,8 @@ if __name__ == "__main__":
                 plt.plot(s.headX, s.headY, 'yo')
                 plt.plot(n.x, n.y, 'go')
                 plt.draw()
-                plt.pause(1)  # When failure happens pause 1 sec
+                plt.pause(5)  # When failure happens pause 5 sec
+                plt.clf()
                 break
             if s.headX[0] == n.x and s.headY[0] == n.y:
                 s.eat()
@@ -51,7 +55,7 @@ if __name__ == "__main__":
             plt.plot(s.headX, s.headY, 'yo')
             plt.plot(n.x, n.y, 'go')
             plt.draw()
-            # plt.pause(1/TimesPerSecond)
+            plt.pause(1/TimesPerSecond)
             plt.clf()
         print("Done.")
         cycle+=1
@@ -59,6 +63,6 @@ if __name__ == "__main__":
         dataInput['Length'] = s.length
         dataInput['Xfact'] = m.Xfact
         dataInput['Yfact'] = m.Yfact
-        if dataInput['Length'] > 25:
-            with open('cycle-%d.json'%cycle, 'w') as outfile:
+        if dataInput['Length'] > 10:
+            with open('Data\\cycle-%d.json'%cycle, 'w') as outfile:
                 json.dump(dataInput, outfile)
